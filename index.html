@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>r0lanoff</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('https://cdn.discordapp.com/attachments/1168881238250094593/1270129763243000009/e03d5d35c0c8c146.gif?ex=66b29405&is=66b14285&hm=97b550e846c25c92dc31a3ca2bab4449ec32084bf2360a9854d15106da1d04b4&') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #fff;
+        }
+        .overlay {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            margin: 0;
+            font-size: 3em;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Белое свечение под заголовком */
+        }
+        .overlay a {
+            color: #fff;
+            text-decoration: none;
+            margin: 10px;
+            font-size: 2em; /* Размер иконок */
+            display: inline-block;
+        }
+        .overlay a:hover {
+            color: #ff0; /* Цвет при наведении */
+        }
+        .overlay img {
+            width: 32px; /* Размер иконки */
+            height: 32px; /* Размер иконки */
+            vertical-align: middle;
+        }
+        .audio-control {
+            margin-top: 20px;
+        }
+        .audio-control a {
+            display: inline-block;
+            margin: 10px;
+            font-size: 2em; 
+            color: #fff;
+        }
+        .audio-control a:hover {
+            color: #ff0; 
+        }
+        .audio-control audio {
+            display: none; 
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <h1>r0lanoff</h1>
+        <a href="https://github.com/r0lanof" target="_blank" aria-label="GitHub">
+            <i class="fab fa-github"></i>
+        </a>
+        <a href="https://modrinth.com/user/r0lanoff" target="_blank" aria-label="Modrinth">
+            <img src="https://docs.modrinth.com/img/logo.svg" alt="Modrinth" />
+        </a>
+        <a href="https://t.me/r0lanoff" target="_blank" aria-label="Telegram">
+            <i class="fab fa-telegram"></i>
+        </a>
+        <a href="https://discord.gg/zmhFPbvmhR" target="_blank" aria-label="Discord">
+            <i class="fab fa-discord"></i>
+        </a>
+        <div class="audio-control">
+            <a href="#" onclick="playAudio(); return false;" aria-label="Play Sound">
+                <i class="fas fa-volume-up"></i>
+            </a>
+            <audio id="sound" src="https://cdn.discordapp.com/attachments/1261322426936197171/1270158648210882680/Lida__Stint_online-video-cutter.com.mp3?ex=66b2aeec&is=66b15d6c&hm=ce16b82a7cfdf11c93c8d5d4b5251a0c1f3f35901d9e918ab2d993d2a56aedb3&"></audio>
+        </div>
+    </div>
+    <script>
+        function playAudio() {
+            const audio = document.getElementById('sound');
+            audio.play();
+        }
+    </script>
+</body>
+</html>
