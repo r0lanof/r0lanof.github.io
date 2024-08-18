@@ -1,96 +1,92 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>r0lanoff</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Days+One&display=swap">
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Days One', sans-serif;
             background: url('https://i.imgur.com/TtB5uZY.gif') no-repeat center center fixed;
             background-size: cover;
-            font-family: Arial, sans-serif;
-            color: #0099ff;
-        }
-        .overlay {
-            background: rgba(1, 27, 39, 0.5);
-            padding: 20px;
+            color: #00aeff;
             text-align: center;
-            border-radius: 10px;
-            max-width: 600px;
-            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transform: scale(1); 
+            transform-origin: top left;
         }
         h1 {
-            margin: 0;
-            font-size: 3em;
-            color: #008cff;
-            text-shadow: 0 0 8px rgba(0, 225, 255, 0.6); 
+            margin-bottom: 7.5px; 
+            font-size: 72px; 
+            letter-spacing: 1.5px;
         }
-        .overlay a {
-            color: #00c3ff;
+        h2 {
+            margin-top: 0;
+            font-size: 42px; 
+            color: #00b7ff;
+        }
+        .social-links {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Интервал между иконками */
+            margin-top: -15px; 
+        }
+        .social-links li {
+            position: relative;
+            display: inline-block;
+        }
+        .social-links a {
+            color: rgb(0, 162, 255);
+            font-size: 48px; /* Размер иконок социальных сетей (64px * 0.75) */
+            padding: 10px; /* Паддинг */
+            display: inline-block;
+            transition: transform 0.3s ease;
             text-decoration: none;
-            margin: 10px;
-            font-size: 2.2em; /* Размер иконок */
-            display: inline-block;
         }
-        .overlay a:hover {
-            color: rgb(0, 255, 0); 
+        .social-links a:hover {
+            transform: translateY(-5px);
         }
-        .overlay img {
-            width: 32px; 
-            height: 32px; 
-            vertical-align: middle;
+        .social-links li::after {
+            content: attr(title); 
+            position: absolute;
+            bottom: -30px; 
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: #00ccff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 10.5px; 
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease; 
+            z-index: 10;
         }
-        .audio-control {
-            margin-top: 20px;
-        }
-        .audio-control a {
-            display: inline-block;
-            margin: 10px;
-            font-size: 2em; 
-            color: #0099ff;
-        }
-        .audio-control a:hover {
-            color: rgb(0, 255, 21); 
-        }
-        .audio-control audio {
-            display: none; 
+        .social-links li:hover::after {
+            opacity: 1;
+            visibility: visible; 
         }
     </style>
 </head>
 <body>
-    <div class="overlay">
-        <h1>r0lanoff</h1>
-        <a href="https://github.com/r0lanof" target="_blank" aria-label="GitHub">
-            <i class="fab fa-github"></i>
-        </a>
-        <a href="https://modrinth.com/user/r0lanoff" target="_blank" aria-label="Modrinth">
-            <img src="https://i.imgur.com/4qfOCOg.png" alt="Modrinth" />
-        </a>
-        <a href="https://t.me/r0lanoff" target="_blank" aria-label="Telegram">
-            <i class="fab fa-telegram"></i>
-        </a>
-        <a href="https://discord.gg/zmhFPbvmhR" target="_blank" aria-label="Discord">
-            <i class="fab fa-discord"></i>
-        </a>
-        <div class="audio-control">
-            <a href="#" onclick="playAudio(); return false;" aria-label="Play Sound">
-                <i class="fas fa-volume-up"></i>
-            </a>
-            <audio id="sound" src="https://cdn.discordapp.com/attachments/1261322426936197171/1270158648210882680/Lida__Stint_online-video-cutter.com.mp3?ex=66b2aeec&is=66b15d6c&hm=ce16b82a7cfdf11c93c8d5d4b5251a0c1f3f35901d9e918ab2d993d2a56aedb3&"></audio>
-        </div>
-    </div>
-    <script>
-        function playAudio() {
-            const audio = document.getElementById('sound');
-            audio.play();
-        }
-    </script>
+    <h1>r0lanoff</h1>
+    <h2>Just a socket</h2> <!-- Подтекст -->
+    <ul class="social-links">
+        <li title="Telegram"><a href="https://t.me/r0lanoff/" class="telegram" target="_blank"><i class="fab fa-telegram-plane"></i></a></li>
+        <li title="Modrinth"><a href="https://modrinth.com/user/r0lanoff" class="modrinth" target="_blank"><i class="fas fa-cube"></i></a></li>
+        <li title="Discord"><a href="https://discord.gg/zmhFPbvmhR" class="discord" target="_blank"><i class="fab fa-discord"></i></a></li>
+        <li title="GitHub"><a href="https://github.com/r0lanof/" class="github" target="_blank"><i class="fab fa-github"></i></a></li>
+    </ul>
 </body>
 </html>
