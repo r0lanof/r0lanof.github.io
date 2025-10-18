@@ -1,94 +1,293 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>r0lanoff</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Days+One&display=swap">
-    <style>
-        body {
-            font-family: 'Days One', sans-serif;
-            background: url('https://i.imgur.com/F2Hi0C6.jpeg') no-repeat center center fixed;
-            background-size: cover;
-            color: #8f0202; /* Very dark red */
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            transform: scale(1); 
-            transform-origin: top left;
-        }
-        h1 {
-            margin-bottom: 7.5px; 
-            font-size: 72px; 
-            letter-spacing: 1.5px;
-            color: #8b1c1c; /* Darker red */
-        }
-        h2 {
-            margin-top: 0;
-            font-size: 42px; 
-            color: #8f0202; /* Very dark red for subtitle */
-        }
-        .social-links {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: -15px; 
-        }
-        .social-links li {
-            position: relative;
-            display: inline-block;
-        }
-        .social-links a {
-            color: #8f0202; /* Darker red for icons */
-            font-size: 48px;
-            padding: 10px;
-            display: inline-block;
-            transition: transform 0.3s ease;
-            text-decoration: none;
-        }
-        .social-links a:hover {
-            transform: translateY(-5px);
-            color: #990000; /* Slightly brighter on hover */
-        }
-        .social-links li::after {
-            content: attr(title); 
-            position: absolute;
-            bottom: -30px; 
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: #aa0000; /* Very dark red tooltip text */
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 10.5px; 
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease; 
-            z-index: 10;
-        }
-        .social-links li:hover::after {
-            opacity: 1;
-            visibility: visible; 
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>r0lanoff</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{
+  --bg:#0b101a;
+  --card:rgba(255,255,255,0.08);
+  --glass:rgba(255,255,255,0.06);
+  --accent:#4fc3f7;
+  --muted:rgba(255,255,255,0.65);
+  --radius:16px;
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+}
+*{box-sizing:border-box;transition:all .25s ease}
+body{
+  margin:0;
+  background:
+    radial-gradient(800px 600px at 10% 10%,rgba(79,195,247,0.06),transparent),
+    radial-gradient(900px 700px at 90% 90%,rgba(124,58,237,0.04),transparent),
+    var(--bg);
+  color:#f0f6ff;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  min-height:100vh;
+  padding:40px;
+}
+.wrap{
+  width:100%;
+  max-width:1200px;
+  display:grid;
+  grid-template-columns:320px 1fr;
+  gap:24px;
+  align-items:start;
+}
+.profile, .content, .project-view{
+  background:var(--glass);
+  backdrop-filter:blur(14px) saturate(140%);
+  border-radius:var(--radius);
+  box-shadow:0 8px 30px rgba(0,0,0,0.45);
+  border:1px solid rgba(255,255,255,0.05);
+}
+.profile{
+  padding:24px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+}
+.avatar{
+  width:120px;height:120px;border-radius:22px;overflow:hidden;margin:0 auto 16px auto;
+  box-shadow:0 6px 20px rgba(0,0,0,0.4);
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+
+h1{text-align:center;margin:8px 0 0;font-size:22px}
+
+.sub{text-align:center;color:var(--muted);font-size:13px;margin-top:4px}
+
+.stats{display:flex;gap:10px;justify-content:space-between;margin-top:20px}
+
+.stat{background:var(--card);padding:12px;border-radius:12px;flex:1;text-align:center}
+
+.stat strong{display:block;font-size:18px}
+
+.stat span{font-size:12px;color:var(--muted)}
+
+.links{display:flex;flex-direction:column;gap:8px;margin-top:18px}
+
+.link-btn{
+  display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;
+  background:rgba(255,255,255,0.04);color:inherit;text-decoration:none;font-weight:600;
+  border:1px solid rgba(255,255,255,0.05);
+}
+.link-btn:hover{background:rgba(255,255,255,0.08);transform:translateY(-2px)}
+.link-btn svg{width:18px;height:18px;stroke:#fff;opacity:0.9}
+
+.content{padding:24px;overflow:hidden;position:relative;min-height:400px;}
+.bio{color:var(--muted);padding:12px 16px;border-radius:12px;background:rgba(255,255,255,0.03);margin-bottom:18px}
+.projects-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  opacity:0;
+  transform:translateY(10px);
+}
+.projects-grid.show{opacity:1;transform:translateY(0)}
+.project{
+  padding:14px;border-radius:14px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.05);
+  display:flex;flex-direction:column;justify-content:space-between;
+  min-height:180px;
+  cursor:pointer;
+  transition:all .25s ease;
+}
+.project:hover{transform:translateY(-5px);background:rgba(255,255,255,0.08)}
+.proj-title{font-weight:700;margin-bottom:4px;font-size:15px}
+.proj-desc{
+  font-size:13px;color:var(--muted);
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+.proj-meta{font-size:12px;color:var(--muted);margin-top:8px}
+.pagination{
+  margin-top:22px;display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;
+}
+.page-btn{
+  padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.05);
+  background:rgba(255,255,255,0.03);color:#fff;cursor:pointer;font-size:13px;
+}
+.page-btn.active{background:var(--accent);color:#000;font-weight:700}
+.page-btn:disabled{opacity:0.4;cursor:not-allowed}
+
+.project-view{
+  display: none;
+  flex-direction: column;
+  background:rgba(255,255,255,0.04);
+  border-radius: var(--radius);
+  padding: 20px;
+  border:1px solid rgba(255,255,255,0.05);
+  transition: all .3s ease;
+}
+.project-view.show{
+  display: flex;
+  animation: fadeIn .3s ease;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.back-btn{
+  align-self:flex-start;padding:8px 14px;border-radius:8px;border:none;
+  background:rgba(255,255,255,0.08);color:#fff;font-weight:600;
+  display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:16px;
+}
+.back-btn:hover{background:rgba(255,255,255,0.15)}
+.proj-header{display:flex;gap:18px;align-items:center;margin-bottom:10px}
+.proj-header img{width:72px;height:72px;border-radius:14px;object-fit:cover}
+.proj-title-big{font-size:22px;font-weight:700}
+.proj-info{color:var(--muted);line-height:1.5}
+.proj-links a{
+  display:inline-flex;align-items:center;gap:6px;margin-top:10px;
+  color:var(--accent);text-decoration:none;font-weight:600;
+}
+
+@media(max-width:900px){
+  .wrap{grid-template-columns:1fr}
+}
+@media(max-width:700px){.projects-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){body{padding:20px}.projects-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-    <h1>r0lanoff</h1>
-    <h2>Just a socket</h2>
-    <ul class="social-links">
-        <li title="Telegram"><a href="https://t.me/r0lanoff/" class="telegram" target="_blank"><i class="fab fa-telegram-plane"></i></a></li>
-        <li title="Modrinth"><a href="https://modrinth.com/user/r0lanoff" class="modrinth" target="_blank"><i class="fas fa-cube"></i></a></li>
-        <li title="Discord"><a href="https://discord.gg/zmhFPbvmhR" class="discord" target="_blank"><i class="fab fa-discord"></i></a></li>
-        <li title="GitHub"><a href="https://github.com/r0lanof/" class="github" target="_blank"><i class="fab fa-github"></i></a></li>
-    </ul>
+<div class="wrap">
+  <aside class="profile">
+    <div class="avatar"><img id="avatarImg" src=""></div>
+    <h1 id="displayName">r0lanoff</h1>
+    <div class="sub" id="username">@r0lanoff</div>
+    <div class="stats">
+      <div class="stat"><strong id="projectsCount">—</strong><span>Проекты</span></div>
+      <div class="stat"><strong id="downloadsCount">—</strong><span>Загрузки</span></div>
+    </div>
+    <div class="links">
+      <a class="link-btn" href="https://modrinth.com/user/r0lanoff" target="_blank"><svg data-lucide="square-chevron-up"></svg>Modrinth</a>
+      <a class="link-btn" href="https://github.com/r0lanof" target="_blank"><svg data-lucide="github"></svg>GitHub</a>
+      <a class="link-btn" href="https://t.me/r0lanoff" target="_blank"><svg data-lucide="send"></svg>Telegram</a>
+    </div>
+  </aside>
+
+  <section class="content" id="mainContent">
+    <h2 style="margin-top:0">Проекты</h2>
+    <div class="bio" id="bio">Загружается профиль...</div>
+    <div class="projects-grid" id="projectsGrid"></div>
+    <div class="pagination" id="pagination"></div>
+    <div class="project-view" id="projectView">
+      <button class="back-btn" id="backBtn"><svg data-lucide="arrow-left"></svg>Назад</button>
+      <div id="projectContent"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(async function(){
+  const username='r0lanoff';
+  const api='https://api.modrinth.com/v2';
+  const perPage=9;
+  const avatar=document.getElementById('avatarImg');
+  const displayName=document.getElementById('displayName');
+  const usernameEl=document.getElementById('username');
+  const bio=document.getElementById('bio');
+  const downloads=document.getElementById('downloadsCount');
+  const projectsCount=document.getElementById('projectsCount');
+  const grid=document.getElementById('projectsGrid');
+  const pagination=document.getElementById('pagination');
+  const projectView=document.getElementById('projectView');
+  const projectContent=document.getElementById('projectContent');
+  const backBtn=document.getElementById('backBtn');
+  let projects=[];
+
+  function fnum(n){return (n||0).toLocaleString('ru-RU');}
+  async function getJSON(url){const r=await fetch(url);if(!r.ok)throw new Error(r.status);return r.json();}
+  function truncate(str,n){return str.length>n?str.slice(0,n-1)+'…':str;}
+
+  try{
+    const user=await getJSON(`${api}/user/${username}`);
+    avatar.src=user.avatar_url;
+    displayName.textContent=user.display_name||user.username;
+    usernameEl.textContent='@'+user.username;
+    bio.textContent=user.bio||'Modrinth';
+
+    projects=await getJSON(`${api}/user/${username}/projects`);
+    projects.sort((a,b)=>(b.downloads||0)-(a.downloads||0));
+    projectsCount.textContent=fnum(projects.length);
+    downloads.textContent=fnum(projects.reduce((a,b)=>a+(b.downloads||0),0));
+    renderPage(1);
+  }catch(e){
+    bio.textContent='Ошибка загрузки данных :(';
+    console.error(e);
+  }
+
+  function renderPage(page){
+    grid.classList.remove('show');
+    const start=(page-1)*perPage;
+    const slice=projects.slice(start,start+perPage);
+    grid.innerHTML='';
+    slice.forEach(p=>{
+      const el=document.createElement('div');
+      el.className='project';
+      el.onclick=()=>openProject(p);
+      el.innerHTML=`
+        <div>
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <img src="${p.icon_url||'https://modrinth.com/static/default-project.png'}" style="width:44px;height:44px;border-radius:10px;object-fit:cover">
+            <div>
+              <div class="proj-title">${p.title}</div>
+              <div class="proj-desc">${truncate(p.description||'',110)}</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:8px">
+          <div class="proj-meta">${fnum(p.downloads)} загрузок</div>
+        </div>`;
+      grid.appendChild(el);
+    });
+    renderPagination(page);
+    setTimeout(()=>grid.classList.add('show'),100);
+  }
+
+  function renderPagination(current){
+    pagination.innerHTML='';
+    const totalPages=Math.ceil(projects.length/perPage);
+    for(let i=1;i<=totalPages;i++){
+      const btn=document.createElement('button');
+      btn.textContent=i;
+      btn.className='page-btn'+(i===current?' active':'');
+      btn.onclick=()=>renderPage(i);
+      pagination.appendChild(btn);
+    }
+  }
+
+  async function openProject(p){
+    grid.style.display='none';
+    pagination.style.display='none';
+    projectView.classList.add('show');
+    projectContent.innerHTML=`
+      <div class="proj-header">
+        <img src="${p.icon_url||'https://modrinth.com/static/default-project.png'}">
+        <div>
+          <div class="proj-title-big">${p.title}</div>
+          <div class="proj-meta">${fnum(p.downloads)} загрузок</div>
+        </div>
+      </div>
+      <div class="proj-info">${p.description||'Без описания.'}</div>
+      <div class="proj-links">
+        <a href="https://modrinth.com/project/${p.slug}" target="_blank"><svg data-lucide="link"></svg>Открыть на Modrinth</a>
+      </div>`;
+    lucide.createIcons();
+    window.scrollTo({top:grid.offsetTop, behavior:'smooth'});
+  }
+
+  backBtn.onclick=()=>{
+    projectView.classList.remove('show');
+    projectContent.innerHTML='';
+    grid.style.display='grid';
+    pagination.style.display='flex';
+  }
+
+  lucide.createIcons();
+})();
+</script>
 </body>
 </html>
