@@ -224,7 +224,7 @@ h1{text-align:center;margin:8px 0 0;font-size:22px}
     console.error(e);
   }
   function updateStats(){
-    const currentProjects=currentCategory==='modrinth'?projects:otherProjects;
+    const currentProjects=projects;
     projectsCount.textContent=fnum(currentProjects.length);
     downloads.textContent=fnum(currentProjects.reduce((a,b)=>a+(b.downloads||0),0));
   }
@@ -249,7 +249,7 @@ h1{text-align:center;margin:8px 0 0;font-size:22px}
           </div>
         </div>
         <div style="margin-top:8px">
-          ${p.isCustom ? '' : `<div class="proj-meta">${fnum(p.downloads)} загрузок</div>`}
+          ${p.isCustom ? `<div class="proj-meta">999.9 загрузок</div>` : `<div class="proj-meta">${fnum(p.downloads)} загрузок</div>`}
         </div>`;
       grid.appendChild(el);
     });
@@ -272,8 +272,8 @@ h1{text-align:center;margin:8px 0 0;font-size:22px}
     grid.style.display='none';
     pagination.style.display='none';
     projectView.classList.add('show');
-    const projectLink=p.isCustom?'#':`https://modrinth.com/project/${p.slug}`;
-    const linkHTML=p.isCustom?'<span style="color:var(--muted)">Проект в разработке</span>':`<a href="${projectLink}" target="_blank"><svg data-lucide="link"></svg>Открыть на Modrinth</a>`;
+    const projectLink=p.isCustom?'https://wakeclient.ru':`https://modrinth.com/project/${p.slug}`;
+    const linkHTML=p.isCustoms?'<span style="color:var(--muted)">Проект в разработке</span>':`<a href="${projectLink}" target="_blank"><svg data-lucide="link"></svg>Открыть</a>`;
     projectContent.innerHTML=`
       <div class="proj-header">
         <img src="${p.icon_url||'https://modrinth.com/static/default-project.png'}">
