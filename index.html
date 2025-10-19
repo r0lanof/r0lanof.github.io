@@ -56,21 +56,13 @@ body{
   box-shadow:0 6px 20px rgba(0,0,0,0.4);
 }
 .avatar img{width:100%;height:100%;object-fit:cover}
-
 h1{text-align:center;margin:8px 0 0;font-size:22px}
-
 .sub{text-align:center;color:var(--muted);font-size:13px;margin-top:4px}
-
 .stats{display:flex;gap:10px;justify-content:space-between;margin-top:20px}
-
 .stat{background:var(--card);padding:12px;border-radius:12px;flex:1;text-align:center}
-
 .stat strong{display:block;font-size:18px}
-
 .stat span{font-size:12px;color:var(--muted)}
-
 .links{display:flex;flex-direction:column;gap:8px;margin-top:18px}
-
 .link-btn{
   display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;
   background:rgba(255,255,255,0.04);color:inherit;text-decoration:none;font-weight:600;
@@ -78,9 +70,15 @@ h1{text-align:center;margin:8px 0 0;font-size:22px}
 }
 .link-btn:hover{background:rgba(255,255,255,0.08);transform:translateY(-2px)}
 .link-btn svg{width:18px;height:18px;stroke:#fff;opacity:0.9}
-
 .content{padding:24px;overflow:hidden;position:relative;min-height:400px;}
 .bio{color:var(--muted);padding:12px 16px;border-radius:12px;background:rgba(255,255,255,0.03);margin-bottom:18px}
+.category-switch{display:flex;gap:8px;margin-bottom:18px}
+.cat-btn{
+  padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.05);
+  background:rgba(255,255,255,0.03);color:#fff;cursor:pointer;font-size:14px;font-weight:600;
+}
+.cat-btn.active{background:var(--accent);color:#000}
+.cat-btn:hover:not(.active){background:rgba(255,255,255,0.08)}
 .projects-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -114,7 +112,6 @@ h1{text-align:center;margin:8px 0 0;font-size:22px}
 }
 .page-btn.active{background:var(--accent);color:#000;font-weight:700}
 .page-btn:disabled{opacity:0.4;cursor:not-allowed}
-
 .project-view{
   display: none;
   flex-direction: column;
@@ -143,7 +140,6 @@ h1{text-align:center;margin:8px 0 0;font-size:22px}
   display:inline-flex;align-items:center;gap:6px;margin-top:10px;
   color:var(--accent);text-decoration:none;font-weight:600;
 }
-
 @media(max-width:900px){
   .wrap{grid-template-columns:1fr}
 }
@@ -165,12 +161,16 @@ h1{text-align:center;margin:8px 0 0;font-size:22px}
       <a class="link-btn" href="https://modrinth.com/user/r0lanoff" target="_blank"><svg data-lucide="square-chevron-up"></svg>Modrinth</a>
       <a class="link-btn" href="https://github.com/r0lanof" target="_blank"><svg data-lucide="github"></svg>GitHub</a>
       <a class="link-btn" href="https://t.me/r0lanoff" target="_blank"><svg data-lucide="send"></svg>Telegram</a>
+      <a class="link-btn" href="https://wakeclient.ru/" target="_blank"><svg data-lucide="shopping-cart"></svg>Купить WAKE</a>
     </div>
   </aside>
-
   <section class="content" id="mainContent">
     <h2 style="margin-top:0">Проекты</h2>
     <div class="bio" id="bio">Загружается профиль...</div>
+    <div class="category-switch">
+      <button class="cat-btn active" data-category="modrinth">Modrinth</button>
+      <button class="cat-btn" data-category="other">Other</button>
+    </div>
     <div class="projects-grid" id="projectsGrid"></div>
     <div class="pagination" id="pagination"></div>
     <div class="project-view" id="projectView">
@@ -179,7 +179,6 @@ h1{text-align:center;margin:8px 0 0;font-size:22px}
     </div>
   </section>
 </div>
-
 <script>
 (async function(){
   const username='r0lanoff';
@@ -197,32 +196,43 @@ h1{text-align:center;margin:8px 0 0;font-size:22px}
   const projectContent=document.getElementById('projectContent');
   const backBtn=document.getElementById('backBtn');
   let projects=[];
-
+  let currentCategory='modrinth';
+  const otherProjects=[
+    {
+      title:'WAKE',
+      description:'Лучший чит на рынке майнкрафта',
+      icon_url:'https://i.imgur.com/xoVxC2e.jpeg',
+      slug:'wake',
+      isCustom:true
+    }
+  ];
   function fnum(n){return (n||0).toLocaleString('ru-RU');}
   async function getJSON(url){const r=await fetch(url);if(!r.ok)throw new Error(r.status);return r.json();}
   function truncate(str,n){return str.length>n?str.slice(0,n-1)+'…':str;}
-
   try{
     const user=await getJSON(`${api}/user/${username}`);
     avatar.src=user.avatar_url;
     displayName.textContent=user.display_name||user.username;
     usernameEl.textContent='@'+user.username;
     bio.textContent=user.bio||'Modrinth';
-
     projects=await getJSON(`${api}/user/${username}/projects`);
     projects.sort((a,b)=>(b.downloads||0)-(a.downloads||0));
-    projectsCount.textContent=fnum(projects.length);
-    downloads.textContent=fnum(projects.reduce((a,b)=>a+(b.downloads||0),0));
+    updateStats();
     renderPage(1);
   }catch(e){
     bio.textContent='Ошибка загрузки данных :(';
     console.error(e);
   }
-
+  function updateStats(){
+    const currentProjects=currentCategory==='modrinth'?projects:otherProjects;
+    projectsCount.textContent=fnum(currentProjects.length);
+    downloads.textContent=fnum(currentProjects.reduce((a,b)=>a+(b.downloads||0),0));
+  }
   function renderPage(page){
+    const currentProjects=currentCategory==='modrinth'?projects:otherProjects;
     grid.classList.remove('show');
     const start=(page-1)*perPage;
-    const slice=projects.slice(start,start+perPage);
+    const slice=currentProjects.slice(start,start+perPage);
     grid.innerHTML='';
     slice.forEach(p=>{
       const el=document.createElement('div');
@@ -239,53 +249,61 @@ h1{text-align:center;margin:8px 0 0;font-size:22px}
           </div>
         </div>
         <div style="margin-top:8px">
-          <div class="proj-meta">${fnum(p.downloads)} загрузок</div>
+          ${p.isCustom ? '' : `<div class="proj-meta">${fnum(p.downloads)} загрузок</div>`}
         </div>`;
       grid.appendChild(el);
     });
     renderPagination(page);
     setTimeout(()=>grid.classList.add('show'),100);
   }
-
-  function renderPagination(current){
+  function renderPagination(page){
+    const currentProjects=currentCategory==='modrinth'?projects:otherProjects;
     pagination.innerHTML='';
-    const totalPages=Math.ceil(projects.length/perPage);
+    const totalPages=Math.ceil(currentProjects.length/perPage);
     for(let i=1;i<=totalPages;i++){
       const btn=document.createElement('button');
       btn.textContent=i;
-      btn.className='page-btn'+(i===current?' active':'');
+      btn.className='page-btn'+(i===page?' active':'');
       btn.onclick=()=>renderPage(i);
       pagination.appendChild(btn);
     }
   }
-
   async function openProject(p){
     grid.style.display='none';
     pagination.style.display='none';
     projectView.classList.add('show');
+    const projectLink=p.isCustom?'#':`https://modrinth.com/project/${p.slug}`;
+    const linkHTML=p.isCustom?'<span style="color:var(--muted)">Проект в разработке</span>':`<a href="${projectLink}" target="_blank"><svg data-lucide="link"></svg>Открыть на Modrinth</a>`;
     projectContent.innerHTML=`
       <div class="proj-header">
         <img src="${p.icon_url||'https://modrinth.com/static/default-project.png'}">
         <div>
           <div class="proj-title-big">${p.title}</div>
-          <div class="proj-meta">${fnum(p.downloads)} загрузок</div>
+          ${p.isCustom ? '' : `<div class="proj-meta">${fnum(p.downloads)} загрузок</div>`}
         </div>
       </div>
       <div class="proj-info">${p.description||'Без описания.'}</div>
       <div class="proj-links">
-        <a href="https://modrinth.com/project/${p.slug}" target="_blank"><svg data-lucide="link"></svg>Открыть на Modrinth</a>
+        ${linkHTML}
       </div>`;
     lucide.createIcons();
     window.scrollTo({top:grid.offsetTop, behavior:'smooth'});
   }
-
   backBtn.onclick=()=>{
     projectView.classList.remove('show');
     projectContent.innerHTML='';
     grid.style.display='grid';
     pagination.style.display='flex';
   }
-
+  document.querySelectorAll('.cat-btn').forEach(btn=>{
+    btn.onclick=()=>{
+      document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCategory=btn.dataset.category;
+      updateStats();
+      renderPage(1);
+    }
+  });
   lucide.createIcons();
 })();
 </script>
